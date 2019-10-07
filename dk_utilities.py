@@ -1,6 +1,10 @@
-def split_data(config, all_games):
+def split_data(config, all_games, mode):
     test_year = config['current_year']
-    test_week = config['current_rg_week']
+    if mode == 'test':
+        test_week = config['current_week']
+    elif mode == 'play':
+        test_week = config['current_rg_week']
+        
     raw_data = all_games[((all_games['Year'] == test_year) & (all_games['Week'] == test_week))].copy()
     historical_data = all_games[((all_games['Year'] == test_year) & (all_games['Week'] < test_week))].copy()
 

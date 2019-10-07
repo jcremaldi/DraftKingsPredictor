@@ -1,11 +1,11 @@
 import pandas as pd
 import random
-import dk_utilities2
+import dk_utilities
 from dk_generate_team_stats import DkGenerateTeamStats 
 pd.options.display.max_columns = 999
 import json
 
-with open(r'config2.json') as f:
+with open(r'config.json') as f:
     config = json.load(f)
     
 def dk_generate_model_data(i, analyzed_raw_data):
@@ -36,7 +36,7 @@ def dk_generate_model_data(i, analyzed_raw_data):
             generate_wr = wr.sample(3)
             
         roster = generate_qb.append([generate_df,generate_te,generate_wr,generate_rb])
-        roster = dk_utilities2.drop_extra_cols(roster)
+        roster = dk_utilities.drop_extra_cols(roster)
 
         roster['team_id'] = cntr
         if (roster['DK salary'].sum() < 50000):# & (roster['DK salary'].sum() > 45000)):
@@ -52,4 +52,4 @@ def dk_generate_model_data(i, analyzed_raw_data):
                 
 
 # use to create rawdate for the model independently               
-dk_generate_model_data(10000, pd.read_csv('./data/raw_data/analyzed_raw_data.csv'))  
+dk_generate_model_data(100, pd.read_csv('./data/raw_data/analyzed_raw_data.csv'))  

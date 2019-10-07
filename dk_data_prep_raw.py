@@ -1,5 +1,5 @@
 import pandas as pd
-import dk_utilities2
+import dk_utilities
 pd.options.display.max_columns=999
 
 
@@ -24,8 +24,6 @@ class DkDataPrepRaw():
         self.raw_data = self.raw_data[self.raw_data['hist_games_tot']>=3]
         # to do: add in checks for injured or recently injured
 
-
-
     def add_base_stats(self):                    
         base_mean_dict = self.historical_data.groupby(['Name'])['DK points'].mean().to_dict()
         base_std_dict = self.historical_data.groupby(['Name'])['DK points'].std().to_dict()
@@ -45,6 +43,7 @@ class DkDataPrepRaw():
         
         weighted_pts_mean_dict = {}
         weighted_salary_mean_dict = {}
+       
         for name in self.raw_data.Name:
             weighted_pts_mean_dict[name] = weighted_ave_pts_dict[(name,'new')]*self.config['new_weight'] + weighted_ave_pts_dict[(name,'old')]*(1 - self.config['new_weight'])
             weighted_salary_mean_dict[name] = weighted_ave_salary_dict[(name,'new')]*self.config['new_weight'] + weighted_ave_salary_dict[(name,'old')]*(1 - self.config['new_weight'])
@@ -60,7 +59,7 @@ class DkDataPrepRaw():
         self.raw_data['ppd_mean'] = self.raw_data['Name'].map(self.ppd_mean_dict)
         self.raw_data['ppd_stdev'] = self.raw_data['Name'].map(self.ppd_std_dict)
         
-        self.raw_data = dk_utilities2.get_sharpe_stats(self.config, self.raw_data, '')
+        self.raw_data = dk_utilities.get_sharpe_stats(self.config, self.raw_data, '')
 
     def get_oppt_adj_sharpe_rank(self):
         self.oppt_adj_ppd_mean_dict = self.historical_data.groupby(['Name'])['oppt_adj_ppd'].mean().to_dict()
@@ -78,9 +77,9 @@ class DkDataPrepRaw():
         self.raw_data['composite_adj_ppd_mean'] = self.raw_data['Name'].map(self.composite_adj_ppd_mean_dict)
         self.raw_data['composite_adj_ppd_stdev'] = self.raw_data['Name'].map(self.composite_adj_ppd_std_dict)
         self.raw_data.to_csv('temp_results_raw.csv')
-        self.raw_data = dk_utilities2.get_sharpe_stats(self.config, self.raw_data, 'oppt_adj_')
-        self.raw_data = dk_utilities2.get_sharpe_stats(self.config, self.raw_data, 'home_away_adj_')
-        self.raw_data = dk_utilities2.get_sharpe_stats(self.config, self.raw_data, 'composite_adj_')
+        self.raw_data = dk_utilities.get_sharpe_stats(self.config, self.raw_data, 'oppt_adj_')
+        self.raw_data = dk_utilities.get_sharpe_stats(self.config, self.raw_data, 'home_away_adj_')
+        self.raw_data = dk_utilities.get_sharpe_stats(self.config, self.raw_data, 'composite_adj_')
   
 #import json
 #

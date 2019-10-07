@@ -1,32 +1,42 @@
 import numpy
 import pandas as pd
-import dk_utilities2
+import dk_utilities
 import json
 import os
+import warnings
+warnings.filterwarnings("ignore")
 pd.options.display.max_columns=999
 
-with open(r'config2.json') as f:
+with open(r'config.json') as f:
     config = json.load(f)
 
 #generate file structure
 try:
     os.makedirs('./data/raw_data')
-    os.makedir('./data/results')
+    os.mkdir('./data/results')
 except:
     pass
 
 # rotogurus
 if not os.path.exists('./data/raw_data/dk_all_games.csv'):
-    all_games = dk_utilities2.rotogurus_scrape(config)
+    all_games = dk_utilities.rotogurus_scrape(config)
     
 all_games.to_csv(r'data/raw_data/dk_all_games.csv',index=False)  
 
-#split the data to build a model
+#split the data to build a model for testing
 all_games = pd.read_csv('./data/raw_data/dk_all_games.csv')
-(hist_raw, hist_hist) = dk_utilities2.split_data(config, all_games)
-hist_raw.to_csv('./data/raw_data/build_model_raw_data.csv', index = False)     
+(hist_raw, hist_hist) = dk_utilities.split_data(config, all_games, 'test')
+hist_raw.to_csv('./data/raw_data/build_model_raw_data_testing.csv', index = False)     
+hist_hist.to_csv('./data/raw_data/build_model_historical_data_testing.csv', index = False)
+
+#split the data to build a model for play
+all_games = pd.read_csv('./data/raw_data/dk_all_games.csv')
+(hist_raw, hist_hist) = dk_utilities.split_data(config, all_games, 'play')
 hist_hist.to_csv('./data/raw_data/build_model_historical_data.csv', index = False)
-  
+weekly_dk_dl = pd.read_csv('./DKSalaries_%s_wk%s.csv' % (config['current_year'],config['current_week']))
+raw_data = dk_utilities.convert_dk_csv(config, weekly_dk_dl)
+raw_data.to_csv('./data/raw_data/build_model_raw_data.csv', index = False)
+
 # analyze teames to generate stats
 from dk_data_prep_hist import DkDataPrepHist
 dk_data_prep_hist =  DkDataPrepHist(config,hist_hist)

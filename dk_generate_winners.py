@@ -1,19 +1,19 @@
 import pandas as pd
-import dk_utilities2
+import dk_utilities
 import json
 import random
 from dk_generate_team_stats import DkGenerateTeamStats
 pd.set_option('display.width', 140)
 pd.options.display.max_columns=999
 
-with open(r'config2.json') as f:
+with open(r'config.json') as f:
     config = json.load(f)
 
 week = 4 #config['current_week']
 year = config['current_year']
 conf_threshold = 0.75
 weekly_dk_dl = pd.read_csv('data/raw_data/DKSalaries_%s_wk%s.csv' % (year, week))
-raw_data = dk_utilities2.convert_dk_csv(config, weekly_dk_dl)        
+raw_data = dk_utilities.convert_dk_csv(config, weekly_dk_dl)        
 
 
 analyzed_raw_data = pd.read_csv('data/raw_data/analyzed_raw_data.csv')
@@ -107,7 +107,7 @@ for i in range(10000):
 
 
         
-        prediction = dk_utilities2.rf_predict(X_test, 160)
+        prediction = dk_utilities.rf_predict(X_test, 160)
         if prediction[0][1] >= conf_threshold:
             print('\n', roster)
             print('actual points: ',track_sal)

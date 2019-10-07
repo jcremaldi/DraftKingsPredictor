@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import statistics
-import dk_utilities2
+import dk_utilities
 
 class DkGenerateTeamStats():
     
@@ -13,7 +13,7 @@ class DkGenerateTeamStats():
         self.col = list(pd.read_csv('data/raw_data/analyzed_raw_data.csv').columns.values)
         self.col_list = ['team_id','Year','Week','total_home','team_salary','flex_pos']
         self.team_roster_stats = generate_raw_data[generate_raw_data['Name'].isin(roster_names)].copy()
-        self.team_roster_stats = dk_utilities2.drop_extra_cols(self.team_roster_stats)
+        self.team_roster_stats = dk_utilities.drop_extra_cols(self.team_roster_stats)
         self.temp_team_analyzed = pd.DataFrame(np.zeros(shape=(1,len(self.col_list))),columns=self.col_list)
 
         self.add_non_agg_stats()

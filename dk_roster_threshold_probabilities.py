@@ -1,5 +1,5 @@
 import pandas as pd
-import dk_utilities2
+import dk_utilities
 from dk_generate_team_stats import DkGenerateTeamStats
 import json
 pd.set_option('display.width', 140)
@@ -44,7 +44,7 @@ roster_explicit_list = list(roster_explicit.values())
 roster = weekly_dk_dl[weekly_dk_dl['Name'].isin(roster_explicit_list)]
 print(roster.Name)
 print(roster['Salary'].sum())
-roster = dk_utilities2.convert_dk_csv(config, roster) 
+roster = dk_utilities.convert_dk_csv(config, roster) 
 
 
 if generate_flex == 'TE':     
@@ -91,7 +91,7 @@ print('actual points: ',track_sal)
 
 for threshold in range(100,170,10):
 
-    prediction = dk_utilities2.rf_predict(X_test, threshold)
+    prediction = dk_utilities.rf_predict(X_test, threshold)
     print('Threshold %s percent-chance: ' % (threshold), prediction[0][1])
 
 

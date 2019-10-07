@@ -1,5 +1,5 @@
 import pandas as pd
-import dk_utilities2
+import dk_utilities
 pd.options.display.max_columns=999
 
 class DkDataPrepHist():
@@ -33,7 +33,7 @@ class DkDataPrepHist():
     def label_old_new(self):
         self.historical_data['weight_bucket'] = 'old'
         self.historical_data.loc[((self.config['current_rg_week'] - self.historical_data['Week']) < self.config['old_new_cutoff']), 'weight_bucket'] = 'new'
-        self.historical_data = dk_utilities2.drop_extra_cols(self.historical_data)
+        self.historical_data = dk_utilities.drop_extra_cols(self.historical_data)
 
     def add_adjusted_stats(self):
         for index, row in self.historical_data.iterrows():

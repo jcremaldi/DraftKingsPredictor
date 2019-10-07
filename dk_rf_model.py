@@ -26,14 +26,12 @@ class DkRfModel():
                 self.raw_data.loc[each,'target'] = 1    
         
         factors_as_is = list(self.raw_data.columns.values)
-        factors_categorize = ['flex_pos']
         
         # to do: put into dict
         self.raw_data.loc[self.raw_data['flex_pos'] == 'TE', 'flex_pos'] = 1
         self.raw_data.loc[self.raw_data['flex_pos'] == 'WR', 'flex_pos'] = 2
         self.raw_data.loc[self.raw_data['flex_pos'] == 'RB', 'flex_pos'] = 3
         
-        factors_as_is = factors_as_is + factors_categorize
         remove = ['team_DK points_sum'
                   ,'team_DK points_ave'
                   ,'Def_DK points_sum'

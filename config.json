@@ -1,10 +1,10 @@
 {
     "total_salary" : 50000,
     "current_year" : 2019,
-    "current_week" : 5,
-    "current_rg_week" : 4,
+    "current_week" : 6,
+    "current_rg_week" : 5,
     "max_week" : 17,
-    "old_new_cutoff" : 2,
+    "old_new_cutoff" : 3,
     "get_raw" : false,
     "new_weight" : 0.60,
     "model_balance_data" : true,
