@@ -52,4 +52,4 @@ def dk_generate_model_data(i, analyzed_raw_data):
                 
 
 # use to create rawdate for the model independently               
-dk_generate_model_data(100, pd.read_csv('./data/raw_data/analyzed_raw_data.csv'))  
+dk_generate_model_data(100000, pd.read_csv('./data/raw_data/analyzed_raw_data.csv'))  

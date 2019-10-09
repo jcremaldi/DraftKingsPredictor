@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
@@ -10,14 +11,15 @@ pd.options.display.max_columns=999
 
 class DkRfModel():
     
-    def __init__(self, config, threshold):
+    def __init__(self, config, raw_data, threshold):
+        self.raw_data = raw_data
         self.config = config
         self.threshold = threshold
         self.rf_data_prep()
         self.create_store_rf_model()
 
     def rf_data_prep(self):        
-        self.raw_data = pd.read_csv('data/raw_data/random_teams_analyzed.csv').dropna()
+
         self.raw_data['target'] = 0
         
         # set target data
@@ -68,7 +70,7 @@ class DkRfModel():
     def create_store_rf_model(self):            
         X_train, X_test, y_train, y_test = train_test_split(self.X, self.y, train_size = .8)
         classifier_rf = RandomForestClassifier(n_estimators = 300, max_features = 'sqrt')
-        classifier_rf.fit(X_train, y_train.values.ravel())
+        classifier_rf.fit(X_train, y_train)
         #weight_dict = dict(zip(self.cat_list, classifier_rf.feature_importances_))
         #print(weight_dict)
         y_pred = classifier_rf.predict(X_test)
@@ -97,10 +99,13 @@ class DkRfModel():
 import json
 with open(r'config.json') as f:
     config = json.load(f)
-    
-for threshold in range(160,170,10):
+raw_data = pd.read_csv('data/raw_data/random_teams_analyzed.csv')
+len1 = len(raw_data)
+raw_data = raw_data.replace([np.inf, -np.inf], np.nan).dropna()
+print(len1 - len(raw_data), ' of %s rows lost' % (len1))
+for threshold in range(110,180,10):
     print(threshold)
-    create_model = DkRfModel(config, threshold)
+    create_model = DkRfModel(config, raw_data, threshold)
 
 
 
